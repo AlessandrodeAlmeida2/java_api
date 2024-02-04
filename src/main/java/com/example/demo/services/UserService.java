@@ -2,6 +2,9 @@ package com.example.demo.services;
 
 import com.example.demo.domain.AppUser;
 
+import java.util.List;
+
 public interface UserService {
-    public AppUser findById(Integer id);
+    AppUser findById(Integer id);
+    List<AppUser> findAll();
 }
