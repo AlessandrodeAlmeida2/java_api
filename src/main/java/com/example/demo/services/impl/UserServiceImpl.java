@@ -1,9 +1,11 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.domain.AppUser;
+import com.example.demo.domain.dto.UserDTO;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.UserService;
 import com.example.demo.services.exceptions.ObjectNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private ModelMapper mapper;
     @Override
     public AppUser findById(Integer id) {
         Optional<AppUser> obj = repository.findById(id);
@@ -22,5 +27,10 @@ public class UserServiceImpl implements UserService {
 
     public List<AppUser> findAll(){
         return repository.findAll();
+    }
+
+    @Override
+    public AppUser create(UserDTO obj) {
+        return repository.save(mapper.map(obj, AppUser.class));
     }
 }
