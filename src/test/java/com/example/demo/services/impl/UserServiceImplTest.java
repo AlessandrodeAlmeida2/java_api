@@ -1,0 +1,78 @@
+package com.example.demo.services.impl;
+
+import com.example.demo.domain.AppUser;
+import com.example.demo.domain.dto.UserDTO;
+import com.example.demo.repositories.UserRepository;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+@SpringBootTest
+class UserServiceImplTest {
+
+    int ID = 6;
+    String nome = "Vitoria";
+    String email = "vitoria@email.com";
+    String password = "753";
+    @InjectMocks
+    private UserServiceImpl service;
+    @Mock
+    private UserRepository repository;
+    @Mock
+    private ModelMapper mapper;
+    private AppUser user;
+    private UserDTO userDTO;
+    private Optional<AppUser> optionalAppUser;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+        startUser();
+    }
+
+    @Test
+    void whenFindByIdReturnAnUserInstance() {
+        Mockito.when(repository.findById(Mockito.anyInt())).thenReturn(optionalAppUser);
+
+        AppUser response = service.findById(ID);
+
+        assertNotNull(response);
+        assertEquals(AppUser.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(nome, response.getNome());
+        assertEquals(email, response.getEmail());
+    }
+
+    @Test
+    void findAll() {
+    }
+
+    @Test
+    void create() {
+    }
+
+    @Test
+    void update() {
+    }
+
+    @Test
+    void delete() {
+    }
+
+    private void startUser(){
+
+        user = new AppUser(ID, nome, email, password);
+        userDTO = new UserDTO(ID, nome, email, password);
+        optionalAppUser = Optional.of(new AppUser(ID, nome, email, password));
+    }
+}
