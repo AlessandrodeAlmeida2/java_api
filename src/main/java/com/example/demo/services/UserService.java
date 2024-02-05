@@ -9,4 +9,5 @@ public interface UserService {
     AppUser findById(Integer id);
     List<AppUser> findAll();
     AppUser create(UserDTO obj);
+    AppUser update(UserDTO obj);
 }
