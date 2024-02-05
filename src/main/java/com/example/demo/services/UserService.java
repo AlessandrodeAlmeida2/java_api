@@ -10,4 +10,5 @@ public interface UserService {
     List<AppUser> findAll();
     AppUser create(UserDTO obj);
     AppUser update(UserDTO obj);
+    void delete(Integer id);
 }
