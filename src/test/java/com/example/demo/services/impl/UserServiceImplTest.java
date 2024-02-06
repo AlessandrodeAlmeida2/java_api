@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.domain.AppUser;
 import com.example.demo.domain.dto.UserDTO;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.services.exceptions.DataIntegratyViolationException;
 import com.example.demo.services.exceptions.ObjectNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,9 +19,8 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -98,6 +98,19 @@ class UserServiceImplTest {
         assertEquals(nome, response.getNome());
         assertEquals(email, response.getEmail());
         assertEquals(password, response.getPassword());
+    }
+
+    @Test
+    void whenCreateThenReturnADataIntegrityViolationException() {
+        when(repository.findByEmail(anyString())).thenReturn(optionalAppUser);
+
+        try {
+            optionalAppUser.get().setId(1);
+            service.create(userDTO);
+        } catch (Exception ex) {
+            assertEquals(DataIntegratyViolationException.class, ex.getClass());
+            assertEquals("Em@il já cadastrado no sistema!", ex.getMessage());
+        }
     }
 
     @Test
