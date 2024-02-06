@@ -20,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.any;
 
 @SpringBootTest
 class UserServiceImplTest {
@@ -86,7 +87,17 @@ class UserServiceImplTest {
     }
 
     @Test
-    void create() {
+    void whenCreateThenReturnSuccess() {
+        when(repository.save(any())).thenReturn(user);
+
+        AppUser response = service.create(userDTO);
+
+        assertNotNull(response);
+        assertEquals(AppUser.class, response.getClass());
+        assertEquals(ID, response.getId());
+        assertEquals(nome, response.getNome());
+        assertEquals(email, response.getEmail());
+        assertEquals(password, response.getPassword());
     }
 
     @Test
